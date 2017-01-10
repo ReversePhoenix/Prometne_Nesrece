@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title>ISVU/Pregled</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+
+
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .navbar-nav {
+            width: 100%;
+            text-align: center;
+        }
+        .navbar-nav> li {
+            float: none;
+            display: inline-block;
+        }
+
+        footer {
+            position: fixed;
+            height: 100px;
+            bottom: 0;
+            width: 100%;
+        }
+
+        a {
+            border: 1px solid cornflowerblue;
+        }
+
+    </style>
+</head>
+<body>
+<h1 style="text-align:center">Vizualizacija prometnih nesreč na podlagi odprtih podatkov
+</h1>
+<nav class="navbar navbar-static-top">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li><a href="index.html">Domov</a></li>
+            <li><a href="pravna.html">Pravna podlaga</a></li>
+            <li><a href="pregled.html">Pregled nesrec</a></li>
+            <li class="active"><a href="analiza.html">Analiza nesrec</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <h2 style="text-align: center">Analiza prometnih nesreč</h2>
+    <div class="row">
+        <form action="" method="post">
+            <div class="col-md-4"><h4>Analiza posledic</h4>
+                <fieldset>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="query" id="optionsRadios2" value="Brez poskodb">
+                            Brez poskodb
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="query" id="optionsRadios2" value="Lazje poskodbe">
+                            Lazje poskodbe
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="query" id="optionsRadios2" value="Hujse poskodbe">
+                            Hujse poskodbe
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="query" id="optionsRadios2" value="Smrt">
+                            Smrt
+                        </label>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="col-md-4"><h4>Analiza primerov</h4>
+                <fieldset>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Celno trcenje">
+                            Celno trcenje
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Bocno trcenje">
+                            Bocno trcenje
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Naletno trcenje">
+                            Naletno trcenje
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="oplazenje">
+                            Oplazenje
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Ostalo">
+                            Ostalo
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Povozenje pesca">
+                            Povozenje pesca
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Prevrnitev vozila">
+                            Prevrnitev vozila
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Povozenje zivali">
+                            Povozenje zivali
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Trcenje v objket">
+                            Trcenje v objket
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Trcenje v stojece">
+                            Trcenje v stojece
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Nepoznan tip">
+                            Nepoznan tip
+                        </label>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="col-md-4"><h4>Analiza vzrokov nesrec</h4>
+                <fieldset>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Nepravilnost na cesti">
+                            Nepravilnost na cesti
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Neprilagojena hitrost">
+                            Neprilagojena hitrost
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Nepravilnost pesca">
+                            Nepravilnost pesca
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Ostalo">
+                            Ostalo
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Neupostevanje pravil o prednosti">
+                            Neupostevanje pravil o prednosti
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Nepravilno prehitevanje">
+                            Nepravilno prehitevanje
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Premiki z vozilom">
+                            Preminiki z vozilom
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Nepravilna smer voznje">
+                            Nepravilna smer voznje
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Nepravilnost na tovoru">
+                            Nepravilnost na tovoru
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Nepravilnost na vozilu">
+                            Nepravilnost na vozilu
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="optionsRadios" id="optionsRadios2" value="Nepoznan vzrok">
+                            Neznan vzrok
+                        </label>
+                    </div>
+                </fieldset>
+            </div>
+            <input type="submit" name="submit" value="query">
+        </form>
+    </div>
+</div>
+<br/>
+<div style="border-top: 2px solid black" id="footer">
+    <div  style="text-align: center" class="container">
+        <p><strong>Spletna aplikacija Prometnih nesreč in nezgod | Rok Silič & Jernej Rejc | 2017</strong></p>
+        <a style="border:none" href="https://github.com/ReversePhoenix/PrometneNesrece"> <p> Github </p></a>
+    </div>
+</div>
+</body>
+</html>

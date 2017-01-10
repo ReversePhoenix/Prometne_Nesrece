@@ -1,0 +1,301 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <title>ISVU/Domov</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+
+        #map {
+            height: 520px;
+            width: 65%;
+            margin: auto;
+            border: 5px solid cornflowerblue;
+        }
+
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .navbar-nav {
+            width: 100%;
+            text-align: center;
+        }
+        .navbar-nav> li {
+            float: none;
+            display: inline-block;
+        }
+        a {
+            border: 1px solid cornflowerblue;
+        }
+
+        footer {
+            position: fixed;
+            height: 100px;
+            bottom: 0;
+            width: 100%;
+        }
+
+
+
+    </style>
+</head>
+<body>
+<h1 style="text-align:center">Vizualizacija prometnih nesreč na podlagi odprtih podatkov
+</h1>
+<nav class="navbar navbar-static-top">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="../index.html">Domov</a></li>
+            <li><a href="../pravna.html">Pravna podlaga</a></li>
+            <li><a href="../pregled.html">Pregled nesrec</a></li>
+        </ul>
+    </div>
+</nav>
+
+
+<div style="text-align: center">
+    <h3>Informativni prikaz zadnjih 200 prometnih nesreč zs smrtnim izidom v Republiki Sloveniji po podatkih Policije.</h3>
+</div>
+
+<br/>
+
+<div id="map"></div>
+<script>
+    var selected_klas;
+    var selected_tip;
+    var selected_vzrok;
+    var haha;
+    function potrditevParametrov() {
+
+        //za izbiro v drop down meniju klas
+        var temp_getSelected_klas = document.getElementById("klas_nesrece");
+        selected_klas = temp_getSelected_klas.options[temp_getSelected_klas.selectedIndex].text;
+
+        //za izbiro tipa
+        var temp_getSelected_tip = document.getElementById("tip");
+        selected_tip = temp_getSelected_tip.options[temp_getSelected_tip.selectedIndex].text;
+
+        //za izbiro vzroka nesrece
+        var temp_getSelected_vzrok = document.getElementById("vzrok");
+        selected_vzrok = temp_getSelected_vzrok.options[temp_getSelected_vzrok.selectedIndex].text;
+        haha = selected_klas+selected_tip+selected_vzrok;
+
+        //po tem ko prebere parametre jih tukaj zapise v <li> elemente pod id=xxxIzpis
+        document.getElementById("klasIzpis").innerHTML = selected_klas;
+        document.getElementById("tipIzpis").innerHTML = selected_tip;
+        document.getElementById("vzrokIzpis").innerHTML = selected_vzrok;
+        return haha;
+
+    }
+    console.log(potrditevParametrov());
+    var customLabel = {
+        restaurant: {
+            label: 'R'
+        },
+        bar: {
+            label: 'B'
+        }
+    };
+
+    function initMap() {
+        var lj = {lat: 46.056946, lng:14.505751};
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 8,
+            center: lj
+        });
+        var infoWindow = new google.maps.InfoWindow;
+
+        // Change this depending on the name of your PHP or XML file
+        downloadUrl('http://localhost/isvu/poskodbe/prikazSmrtPHP.php', function(data) {
+            var xml = data.responseXML;
+            var markers = xml.documentElement.getElementsByTagName('marker');
+
+            Array.prototype.forEach.call(markers, function(markerElem) {
+                var name = markerElem.getAttribute('id');
+
+                //Za dolocanja ce so bile poskodbe klas_nesrece
+                var address = markerElem.getAttribute('klas_nesrece');
+                if(address == "B") {
+                    address = "Brez poskodb";
+                }
+                else if(address == "H") {
+                    address = "Hujsa poskodba";
+                }
+                else if(address == "L") {
+                    address =  "Lazja poskodba"
+                }
+                else if(address == "S") {
+                    address = "Smrt";
+                }
+                else if(address == "U") {
+                    address = "Brez poskodb";
+                }
+                //var type = markerElem.getAttribute('name');
+                var point = new google.maps.LatLng(
+                    parseFloat(markerElem.getAttribute('lat')),
+                    parseFloat(markerElem.getAttribute('lod')));
+
+                //dolocanje vzroka nesrece
+                var vzrok = markerElem.getAttribute('vzrok');
+                switch (vzrok) {
+                    case "CE":
+                        vzrok = "Nepravilnost na cesti";
+                        break;
+                    case "HI":
+                        vzrok = "Neprilagojena hitrost";
+                        break;
+                    case "NP":
+                        vzrok = "Nepravilnost pesca";
+                        break;
+                    case "OS":
+                        vzrok = "Ostalo";
+                        break;
+                    case "PD":
+                        vzrok = "Neupostevanje pravil o prednosti";
+                        break;
+                    case "PR":
+                        vzrok = "Nepravilno prehitevanje";
+                        break;
+                    case "PV":
+                        vzrok = "Premiki z vozilom";
+                        break;
+                    case "SV":
+                        vzrok = "Nepravilna smer voznje";
+                        break;
+                    case "TO":
+                        vzrok = "Nepravilnosti na tovoru";
+                        break;
+                    case "VO":
+                        vzrok = "Nepravilnosti na vozilu";
+                        break;
+                    case "VR":
+                        vzrok = "Neustrezna varnostna razdalja";
+                        break;
+                    default:
+                        vzrok = "Nepoznan vzrok";
+                }
+
+                //dolocanje kaj se je zgodilo (kasna je bla nesreca)
+                var tip = markerElem.getAttribute('tip');
+                switch (tip) {
+                    case "ČT":
+                        tip = "Celno trcenje";
+                        break;
+                    case "BT":
+                        tip = "Bocno trcenje";
+                        break;
+                    case "NT":
+                        tip ="Naletno trcenje";
+                        break;
+                    case "OP":
+                        tip = "Oplazenje";
+                        break;
+                    case "OS":
+                        tip = "Ostalo";
+                        break;
+                    case "PP":
+                        tip ="Povozenje pesca";
+                        break;
+                    case "PR":
+                        tip = "Prevrnitev vozila";
+                        break;
+                    case "PZ":
+                        tip = "Povozenje zivali";
+                        break;
+                    case "TO":
+                        tip = "Trcenje v objekt";
+                        break;
+                    case "TV":
+                        tip = "Trcenje v stojece";
+                        break;
+                    default:
+                        tip = "Nepoznan tip";
+
+
+                }
+                //funkcija za preverjane ujemanje med parametri TIP, KLAS, VZROK in parametri
+                //ki jih uporabnik izbere v meniju klasIzpis, tipIzpis, vzrokIzpis
+
+                var infowincontent = document.createElement('div');
+                var strong = document.createElement('strong');
+                strong.textContent = name;
+                infowincontent.appendChild(strong);
+                infowincontent.appendChild(document.createElement('br'));
+
+                var text = document.createElement('text');
+                text.textContent = address+", "+tip+", "+vzrok;
+                infowincontent.appendChild(text);
+
+                //za definicijo v katero kategorijo spada marker
+                var catDefine = address+tip+vzrok;
+                /* var catDefine = "Izberite vrsto poskodbIzberite tip nesreceIzberite vzrok nesrece"
+
+                 //za definicijo kaksen je bil iskalni niz
+                 var nizDefine = potrditevParametrov();
+
+                 console.log(catDefine+" - "+nizDefine);
+                 if(catDefine == nizDefine) {
+                 point = {lat: 46.056946, lng:14.505751};
+                 } */
+                var icon = {};
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: point,
+                    label: icon.label,
+                    category: catDefine
+
+                });
+
+
+                marker.addListener('click', function() {
+                    infoWindow.setContent(infowincontent);
+                    infoWindow.open(map, marker);
+                });
+            });
+        });
+    }
+
+
+
+    function downloadUrl(url, callback) {
+        var request = window.ActiveXObject ?
+            new ActiveXObject('Microsoft.XMLHTTP') :
+            new XMLHttpRequest;
+
+        request.onreadystatechange = function() {
+            if (request.readyState == 4) {
+                request.onreadystatechange = doNothing;
+                callback(request, request.status);
+            }
+        };
+
+        request.open('GET', url, true);
+        request.send(null);
+    }
+
+    function doNothing() {}
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPekoP6wU5t5_CBDD5w03FN_7-TOCmFhY&callback=initMap">
+</script>
+
+<br/>
+<div style="border-top: 2px solid black" id="footer">
+    <div  style="text-align: center" class="container">
+        <p><strong>Spletna aplikacija Prometnih nesreč in nezgod | Rok Silič & Jernej Rejc | 2017</strong></p>
+        <a style="border:none" href="https://github.com/ReversePhoenix/PrometneNesrece"> <p> Github </p></a>
+    </div>
+</div>
+</body>
+</html>
